@@ -52,13 +52,13 @@ def test_exceptions(tmpdir, mocker):
         return res
     mocker.patch.object(lookatme.tui, "create_tui", fake_create_tui)
 
-    res = run_cmd("--log", str(log_path), str(pres_path))
+    res = run_cmd("--log", "", str(log_path), str(pres_path))
     assert exception_text in res.output
     assert f"slide {slide_number+1}" in res.output
     # should remind us to rerun with --debug to see the traceback
     assert "--debug" in res.output
 
-    res = run_cmd("--debug", "--log", str(log_path), str(pres_path))
+    res = run_cmd("--debug","", "--log", str(log_path), str(pres_path))
     assert exception_text in res.output
     assert f"slide {slide_number+1}" in res.output
     # should remind us to check log_path for the traceback
