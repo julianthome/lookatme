@@ -5,8 +5,8 @@ Config module for lookatme
 
 import os
 
-
 import lookatme.log
+import lookatme.server
 
 
 LOG = None

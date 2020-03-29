@@ -13,16 +13,17 @@ import pygments.styles
 import sys
 import tempfile
 
-
 import lookatme.tui
 import lookatme.log
 import lookatme.config
+
+from lookatme.server import Server
 from lookatme.pres import Presentation
 from lookatme.schemas import StyleSchema
 
-
 @click.command("lookatme")
 @click.option("--debug", "debug", is_flag="True", default=False)
+@click.option("--port", "port", required=False, default=8886)
 @click.option(
     "-l",
     "--log",
@@ -64,7 +65,8 @@ from lookatme.schemas import StyleSchema
     type=click.File("r"),
     nargs=-1,
 )
-def main(debug, log_path, theme, code_style, dump_styles, input_files, live_reload):
+
+def main(debug, port, log_path, theme, code_style, dump_styles, input_files, live_reload):
     """lookatme - An interactive, terminal-based markdown presentation tool.
     """
     if debug:
@@ -81,6 +83,8 @@ def main(debug, log_path, theme, code_style, dump_styles, input_files, live_relo
         return 0
 
     try:
+        server = Server(port)
+        server.serve()
         pres.run()
     except Exception as e:
         number = pres.tui.curr_slide.number + 1
